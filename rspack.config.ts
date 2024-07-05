@@ -14,10 +14,42 @@ export default defineConfig({
     path: path.resolve(__dirname, "build"),
   },
   resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
     extensions: ["...", ".ts", ".tsx", ".jsx"],
   },
   module: {
     rules: [
+      {
+        use: "builtin:swc-loader",
+        options: {
+          rspackExteriments: {
+            import: [
+              {
+                libraryName: "antd",
+                customName: "antd/es/{{ member }}",
+              },
+            ],
+          },
+        },
+      },
+      {
+        test: /\.(module|m)\.scss$/,
+        use: [
+          {
+            loader: "sass-loader",
+            options: {
+              // 同时使用 `modern-compiler` 和 `sass-embedded` 可以显著提升构建性能
+              // 需要 `sass-loader >= 14.2.1`
+              api: "modern-compiler",
+              implementation: require.resolve("sass-embedded"),
+            },
+          },
+        ],
+        // 如果你需要将 '*.module.(sass|scss)' 视为 CSS Modules 那么将 'type' 设置为 'css/auto' 否则设置为 'css'
+        type: "css/auto",
+      },
       {
         test: /\.svg$/,
         type: "asset",

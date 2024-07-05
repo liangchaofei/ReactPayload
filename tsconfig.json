@@ -11,9 +11,13 @@
     "resolveJsonModule": true,
     "moduleResolution": "bundler",
     "useDefineForClassFields": true,
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
-  "include": ["src"],
+  "include": ["src/**/*.ts", "example/**/*.ts", "example/**/*.tsx"],
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS"
